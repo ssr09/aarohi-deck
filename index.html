@@ -1,0 +1,1930 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Project Aarohi | Integrated Motherhood Campus</title>
+    <style>
+      :root {
+        --ink: #17212b;
+        --muted: #5e6670;
+        --paper: #f7f3ec;
+        --ivory: #fffaf1;
+        --teal: #0c5a60;
+        --teal-soft: #dcefed;
+        --sage: #7f9b83;
+        --rose: #b76e74;
+        --gold: #c79a48;
+        --line: rgba(23, 33, 43, 0.14);
+        --shadow: 0 28px 70px rgba(23, 33, 43, 0.2);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at 8% 10%, rgba(199, 154, 72, 0.15), transparent 28%),
+          linear-gradient(135deg, #f3eee5 0%, #e8efe9 55%, #f8f1e4 100%);
+        overflow: hidden;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .deck-shell {
+        width: 100vw;
+        height: 100vh;
+        display: grid;
+        place-items: center;
+        padding:
+          clamp(10px, 2vw, 24px)
+          clamp(10px, 2vw, 28px)
+          clamp(86px, 10vh, 112px);
+      }
+
+      .deck {
+        position: relative;
+        width: min(100%, calc(100vh * 16 / 9));
+        aspect-ratio: 16 / 9;
+        max-height: calc(100vh - clamp(108px, 13vh, 140px));
+        background: var(--ivory);
+        border: 1px solid rgba(255, 255, 255, 0.78);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .slide {
+        position: absolute;
+        inset: 0;
+        display: none;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto minmax(0, 1fr);
+        gap: clamp(16px, 2vw, 30px);
+        padding:
+          clamp(32px, 5vw, 70px)
+          clamp(32px, 5vw, 70px)
+          clamp(32px, 5vw, 70px);
+        visibility: hidden;
+        z-index: 0;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateX(26px);
+        transition: opacity 280ms ease, transform 280ms ease, visibility 280ms ease;
+        background: var(--ivory);
+      }
+
+      .slide.active {
+        display: grid;
+        opacity: 1;
+        visibility: visible;
+        z-index: 2;
+        pointer-events: auto;
+        transform: translateX(0);
+      }
+
+      .slide::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(90deg, rgba(12, 90, 96, 0.07), transparent 28%),
+          linear-gradient(0deg, rgba(23, 33, 43, 0.05), transparent 18%);
+      }
+
+      .slide > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0 0 14px;
+        color: var(--teal);
+        font-size: clamp(11px, 1vw, 14px);
+        font-weight: 760;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 34px;
+        height: 2px;
+        background: var(--gold);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        max-width: 900px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(42px, 6.2vw, 88px);
+        line-height: 0.95;
+        font-weight: 520;
+        letter-spacing: 0;
+      }
+
+      h2 {
+        max-width: 950px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(30px, 4.2vw, 58px);
+        line-height: 1.02;
+        font-weight: 520;
+        letter-spacing: 0;
+      }
+
+      h3 {
+        font-size: clamp(16px, 1.45vw, 24px);
+        line-height: 1.18;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        max-width: 920px;
+        color: #38444c;
+        font-size: clamp(18px, 1.65vw, 28px);
+        line-height: 1.34;
+      }
+
+      .small {
+        color: var(--muted);
+        font-size: clamp(12px, 1vw, 16px);
+        line-height: 1.4;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: minmax(0, 1.02fr) minmax(300px, 0.98fr);
+        gap: clamp(24px, 4vw, 64px);
+        align-items: center;
+        min-height: 0;
+      }
+
+      .hero {
+        color: #fffaf1;
+        background: #17212b;
+        padding: 0;
+        grid-template-rows: minmax(0, 1fr);
+      }
+
+      .hero::before {
+        z-index: 0;
+        background:
+          linear-gradient(90deg, rgba(15, 27, 33, 0.9) 0%, rgba(15, 27, 33, 0.7) 46%, rgba(15, 27, 33, 0.18) 100%),
+          linear-gradient(0deg, rgba(15, 27, 33, 0.74), rgba(15, 27, 33, 0.08) 62%);
+      }
+
+      .hero img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 52% 42%;
+        z-index: 0;
+      }
+
+      .hero-content {
+        align-self: center;
+        padding: clamp(42px, 6vw, 84px);
+        transform: translateY(5%);
+      }
+
+      .hero .eyebrow,
+      .dark .eyebrow {
+        color: #dbeeed;
+      }
+
+      .hero .lead {
+        max-width: 780px;
+        margin-top: 26px;
+        color: rgba(255, 250, 241, 0.9);
+      }
+
+      .hero h1,
+      .hero .lead {
+        text-shadow: 0 3px 18px rgba(0, 0, 0, 0.55);
+      }
+
+      .hero .meta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 36px;
+      }
+
+      .meta-pill {
+        border: 1px solid rgba(255, 250, 241, 0.32);
+        background: rgba(255, 250, 241, 0.12);
+        color: #fffaf1;
+        padding: 10px 14px;
+        border-radius: 999px;
+        font-size: clamp(12px, 1vw, 15px);
+        backdrop-filter: blur(12px);
+      }
+
+      .image-frame {
+        position: relative;
+        min-height: 330px;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        box-shadow: 0 20px 48px rgba(23, 33, 43, 0.16);
+        background: #e9e1d5;
+      }
+
+      .image-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 50% 50%;
+        display: block;
+      }
+
+      .image-frame.focus-left img {
+        object-position: 28% 50%;
+      }
+
+      .image-frame.focus-top img {
+        object-position: 50% 28%;
+      }
+
+      .image-frame.focus-campus img {
+        object-position: 52% 38%;
+      }
+
+      .image-frame.contain img {
+        object-fit: contain;
+        padding: 14px;
+        background: #f7f3ec;
+      }
+
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 30px;
+      }
+
+      .stat {
+        min-height: 132px;
+        border-top: 4px solid var(--gold);
+        background: rgba(255, 255, 255, 0.62);
+        padding: 20px;
+      }
+
+      .stat strong {
+        display: block;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(30px, 4vw, 54px);
+        line-height: 1;
+        font-weight: 520;
+      }
+
+      .stat span {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: clamp(12px, 1vw, 16px);
+        line-height: 1.28;
+      }
+
+      .philosophy {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .pillar {
+        min-height: 235px;
+        padding: 24px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.62);
+      }
+
+      .pillar b {
+        display: grid;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        margin-bottom: 18px;
+        border-radius: 50%;
+        background: var(--teal);
+        color: var(--ivory);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 20px;
+        font-weight: 500;
+      }
+
+      .pillar p {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: clamp(13px, 1.1vw, 17px);
+        line-height: 1.38;
+      }
+
+      .journey {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        align-items: stretch;
+        gap: 10px;
+      }
+
+      .challenge-layout {
+        display: grid;
+        grid-template-columns: 0.95fr 1.05fr;
+        gap: 34px;
+        align-items: center;
+      }
+
+      .challenge-question {
+        margin-top: 28px;
+        padding: 24px 28px;
+        border-left: 5px solid var(--gold);
+        background: rgba(255, 255, 255, 0.72);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(22px, 2.4vw, 36px);
+        line-height: 1.15;
+      }
+
+      .wrong-hint {
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: clamp(13px, 1.1vw, 17px);
+        line-height: 1.38;
+      }
+
+      .journey-step {
+        min-height: 210px;
+        padding: 18px;
+        background: #fff;
+        border: 1px solid var(--line);
+      }
+
+      .journey-map {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 0;
+        position: relative;
+        min-height: 390px;
+        align-items: center;
+      }
+
+      .journey-map::before {
+        content: "";
+        position: absolute;
+        left: 8%;
+        right: 8%;
+        top: 49%;
+        height: 3px;
+        background: linear-gradient(90deg, #61748a, var(--rose), var(--teal), var(--gold), var(--sage));
+        z-index: 0;
+      }
+
+      .journey-node {
+        position: relative;
+        display: grid;
+        grid-template-rows: auto auto;
+        justify-items: center;
+        gap: 18px;
+        z-index: 1;
+      }
+
+      .journey-node:nth-child(even) {
+        transform: translateY(24px);
+      }
+
+      .journey-node:nth-child(odd) {
+        transform: translateY(-24px);
+      }
+
+      .node-dot {
+        width: 62px;
+        height: 62px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--ivory);
+        border: 8px solid var(--teal);
+        box-shadow: 0 16px 34px rgba(23, 33, 43, 0.15);
+        color: var(--ink);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 22px;
+        z-index: 2;
+      }
+
+      .journey-node:nth-child(1) .node-dot {
+        border-color: #61748a;
+      }
+
+      .journey-node:nth-child(2) .node-dot {
+        border-color: var(--rose);
+      }
+
+      .journey-node:nth-child(4) .node-dot {
+        border-color: var(--gold);
+      }
+
+      .journey-node:nth-child(5) .node-dot {
+        border-color: var(--sage);
+      }
+
+      .node-card {
+        width: min(190px, 100%);
+        min-height: 160px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        background: #fff;
+        box-shadow: 0 14px 34px rgba(23, 33, 43, 0.08);
+      }
+
+      .node-card h3 {
+        margin-bottom: 10px;
+      }
+
+      .node-card p {
+        color: var(--muted);
+        font-size: clamp(11px, 0.9vw, 14px);
+        line-height: 1.32;
+      }
+
+      .journey-step:nth-child(2) {
+        border-top: 6px solid var(--rose);
+      }
+
+      .journey-step:nth-child(3) {
+        border-top: 6px solid var(--teal);
+      }
+
+      .journey-step:nth-child(4) {
+        border-top: 6px solid var(--gold);
+      }
+
+      .journey-step:nth-child(5) {
+        border-top: 6px solid var(--sage);
+      }
+
+      .journey-step:first-child {
+        border-top: 6px solid #61748a;
+      }
+
+      .journey-step ul,
+      .phase ul,
+      .risk-list,
+      .program-list {
+        margin: 14px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .journey-step li,
+      .phase li,
+      .program-list li,
+      .risk-list li {
+        position: relative;
+        padding-left: 18px;
+        color: var(--muted);
+        font-size: clamp(12px, 0.95vw, 15px);
+        line-height: 1.36;
+      }
+
+      .journey-step li + li,
+      .phase li + li,
+      .program-list li + li,
+      .risk-list li + li {
+        margin-top: 7px;
+      }
+
+      .journey-step li::before,
+      .phase li::before,
+      .program-list li::before,
+      .risk-list li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.62em;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--gold);
+      }
+
+      .phase-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .phase {
+        min-height: 360px;
+        display: grid;
+        grid-template-rows: auto auto auto minmax(0, 1fr);
+        gap: 14px;
+        padding: 22px;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid var(--line);
+      }
+
+      .phase-number {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--ink);
+        color: var(--ivory);
+        font-weight: 740;
+      }
+
+      .phase-goal {
+        align-self: start;
+        margin-top: 0;
+        color: var(--teal);
+        font-weight: 760;
+        font-size: clamp(12px, 1vw, 15px);
+      }
+
+      .philosophy-visual {
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 36px;
+        align-items: center;
+      }
+
+      .triad {
+        position: relative;
+        min-height: 270px;
+      }
+
+      .triad-circle {
+        position: absolute;
+        width: 172px;
+        height: 172px;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        border-radius: 50%;
+        padding: 28px;
+        color: var(--ivory);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(24px, 2.2vw, 34px);
+        line-height: 1;
+        border: 1px solid rgba(255, 250, 241, 0.32);
+        box-shadow: 0 24px 58px rgba(0, 0, 0, 0.22);
+      }
+
+      .triad-circle.science {
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+        background: rgba(12, 90, 96, 0.86);
+      }
+
+      .triad-circle.tradition {
+        left: 9%;
+        bottom: 0;
+        background: rgba(199, 154, 72, 0.86);
+      }
+
+      .triad-circle.family {
+        right: 9%;
+        bottom: 0;
+        background: rgba(183, 110, 116, 0.86);
+      }
+
+      .philosophy-copy {
+        display: grid;
+        gap: 14px;
+      }
+
+      .philosophy-copy div {
+        padding: 18px 20px;
+        border: 1px solid rgba(255, 250, 241, 0.18);
+        background: rgba(255, 250, 241, 0.08);
+      }
+
+      .philosophy-copy p {
+        margin-top: 8px;
+        color: rgba(255, 250, 241, 0.74);
+        font-size: clamp(12px, 1vw, 15px);
+        line-height: 1.36;
+      }
+
+      .strategy-layout {
+        display: grid;
+        grid-template-columns: 0.82fr 1.18fr;
+        gap: 34px;
+        align-items: center;
+      }
+
+      .flywheel {
+        position: relative;
+        min-height: 410px;
+        display: grid;
+        place-items: center;
+      }
+
+      .flywheel-core {
+        width: 210px;
+        height: 210px;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        border-radius: 50%;
+        background: var(--teal);
+        color: var(--ivory);
+        padding: 26px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 30px;
+        line-height: 1.06;
+        box-shadow: 0 20px 52px rgba(12, 90, 96, 0.26);
+      }
+
+      .flywheel-step {
+        position: absolute;
+        width: 175px;
+        min-height: 84px;
+        padding: 14px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.76);
+        font-weight: 760;
+      }
+
+      .flywheel-step span {
+        display: block;
+        margin-top: 5px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.28;
+        font-weight: 520;
+      }
+
+      .flywheel-step:nth-child(2) {
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .flywheel-step:nth-child(3) {
+        top: 42%;
+        right: 0;
+      }
+
+      .flywheel-step:nth-child(4) {
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .flywheel-step:nth-child(5) {
+        top: 42%;
+        left: 0;
+      }
+
+      .strengths-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .strength {
+        min-height: 106px;
+        padding: 16px;
+        border-left: 4px solid var(--gold);
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .strength p {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: clamp(12px, 0.95vw, 15px);
+        line-height: 1.32;
+      }
+
+      .risk-map {
+        display: grid;
+        grid-template-columns: 0.95fr 0.95fr 1.1fr;
+        gap: 14px;
+      }
+
+      .risk-col {
+        display: grid;
+        gap: 10px;
+      }
+
+      .risk-head {
+        color: #f0d9a5;
+        font-size: clamp(12px, 1vw, 15px);
+        font-weight: 780;
+        text-transform: uppercase;
+      }
+
+      .risk-cell {
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        padding: 14px 16px;
+        border: 1px solid rgba(255, 250, 241, 0.16);
+        background: rgba(255, 250, 241, 0.08);
+        color: rgba(255, 250, 241, 0.82);
+        font-size: clamp(12px, 1vw, 15px);
+        line-height: 1.28;
+      }
+
+      .risk-cell.mitigation {
+        border-color: rgba(240, 217, 165, 0.35);
+        background: rgba(240, 217, 165, 0.12);
+      }
+
+      .risk-cell.proof {
+        border-color: rgba(127, 155, 131, 0.35);
+        background: rgba(127, 155, 131, 0.12);
+      }
+
+      .destination-layout {
+        display: grid;
+        grid-template-columns: 0.86fr 1.14fr;
+        gap: 34px;
+        align-items: center;
+      }
+
+      .destination-stack {
+        display: grid;
+        gap: 12px;
+      }
+
+      .destination-row {
+        display: grid;
+        grid-template-columns: 160px minmax(0, 1fr);
+        gap: 16px;
+        align-items: center;
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid var(--line);
+      }
+
+      .destination-row b {
+        color: var(--teal);
+      }
+
+      .destination-row span {
+        color: var(--muted);
+        line-height: 1.32;
+      }
+
+      .dark {
+        color: var(--ivory);
+        background: #132127;
+      }
+
+      .dark::before {
+        background:
+          linear-gradient(90deg, rgba(12, 90, 96, 0.48), transparent 42%),
+          linear-gradient(0deg, rgba(199, 154, 72, 0.08), transparent 48%);
+      }
+
+      .dark .lead,
+      .dark .small,
+      .dark .program-list li,
+      .dark .risk-list li {
+        color: rgba(255, 250, 241, 0.74);
+      }
+
+      .program-matrix {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .precedent-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .precedent-card {
+        min-height: 300px;
+        display: grid;
+        grid-template-rows: auto auto auto minmax(0, 1fr);
+        gap: 12px;
+        padding: 22px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .precedent-card .location {
+        color: var(--teal);
+        font-size: clamp(12px, 1vw, 15px);
+        font-weight: 780;
+        text-transform: uppercase;
+        letter-spacing: 0;
+      }
+
+      .precedent-card h3 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(22px, 2.2vw, 32px);
+        font-weight: 520;
+      }
+
+      .metric-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .mini-metric {
+        min-height: 70px;
+        padding: 10px;
+        border-top: 3px solid var(--gold);
+        background: rgba(247, 243, 236, 0.86);
+      }
+
+      .mini-metric strong {
+        display: block;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(18px, 1.7vw, 26px);
+        line-height: 1;
+      }
+
+      .mini-metric span {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: clamp(9px, 0.75vw, 12px);
+        line-height: 1.2;
+      }
+
+      .source-note {
+        color: rgba(94, 102, 112, 0.86);
+        font-size: clamp(10px, 0.82vw, 12px);
+        line-height: 1.35;
+      }
+
+      .precedent-card .program-list {
+        margin-top: 2px;
+      }
+
+      .precedent-card .program-list li {
+        font-size: clamp(10px, 0.82vw, 13px);
+      }
+
+      .precedent-card .program-list li + li {
+        margin-top: 5px;
+      }
+
+      .advantage-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .advantage {
+        min-height: 260px;
+        padding: 22px;
+        border: 1px solid rgba(255, 250, 241, 0.18);
+        background: rgba(255, 250, 241, 0.08);
+      }
+
+      .advantage b {
+        display: inline-grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        margin-bottom: 18px;
+        border-radius: 50%;
+        background: #f0d9a5;
+        color: #132127;
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 700;
+      }
+
+      .advantage p {
+        margin-top: 10px;
+        color: rgba(255, 250, 241, 0.74);
+        font-size: clamp(12px, 1vw, 15px);
+        line-height: 1.36;
+      }
+
+      .program {
+        min-height: 138px;
+        padding: 20px;
+        border: 1px solid rgba(255, 250, 241, 0.18);
+        background: rgba(255, 250, 241, 0.08);
+      }
+
+      .program .tag {
+        display: inline-block;
+        margin-bottom: 18px;
+        color: #f0d9a5;
+        font-size: 12px;
+        font-weight: 760;
+        text-transform: uppercase;
+        letter-spacing: 0;
+      }
+
+      .travel-line {
+        display: grid;
+        grid-template-columns: 0.75fr 1.25fr;
+        gap: 28px;
+        align-items: center;
+        margin-top: 20px;
+      }
+
+      .quote {
+        padding-left: 24px;
+        border-left: 4px solid var(--gold);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(22px, 2.8vw, 40px);
+        line-height: 1.12;
+      }
+
+      .retreat-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(290px, 0.95fr);
+        gap: 34px;
+        align-items: stretch;
+      }
+
+      .retreat-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .retreat-list div {
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        border-left: 4px solid var(--teal);
+        background: rgba(255, 255, 255, 0.68);
+        padding: 14px 16px;
+        color: #32404a;
+        font-weight: 700;
+      }
+
+      .financials {
+        display: grid;
+        grid-template-columns: 0.88fr 1.12fr;
+        gap: 34px;
+        align-items: center;
+      }
+
+      .revenue-wheel {
+        position: relative;
+        min-height: 310px;
+        display: grid;
+        place-items: center;
+      }
+
+      .wheel-core {
+        position: relative;
+        z-index: 2;
+        width: 150px;
+        height: 150px;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        border-radius: 50%;
+        background: var(--teal);
+        color: var(--ivory);
+        padding: 18px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 23px;
+        line-height: 1.08;
+        box-shadow: 0 18px 40px rgba(12, 90, 96, 0.28);
+      }
+
+      .wheel-item {
+        position: absolute;
+        width: 150px;
+        min-height: 58px;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        padding: 12px;
+        border: 1px solid var(--line);
+        background: #fff;
+        color: #2f3c45;
+        font-size: clamp(11px, 0.9vw, 14px);
+        font-weight: 720;
+      }
+
+      .wheel-item:nth-child(2) {
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .wheel-item:nth-child(3) {
+        top: 72px;
+        right: 0;
+      }
+
+      .wheel-item:nth-child(4) {
+        bottom: 18px;
+        right: 12px;
+      }
+
+      .wheel-item:nth-child(5) {
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .wheel-item:nth-child(6) {
+        bottom: 18px;
+        left: 12px;
+      }
+
+      .wheel-item:nth-child(7) {
+        top: 72px;
+        left: 0;
+      }
+
+      .roadmap {
+        display: grid;
+        gap: 14px;
+      }
+
+      .roadmap-row {
+        display: grid;
+        grid-template-columns: 92px minmax(0, 1fr) 150px;
+        gap: 16px;
+        align-items: center;
+        padding: 12px 16px;
+        background: rgba(255, 255, 255, 0.66);
+        border: 1px solid var(--line);
+      }
+
+      .roadmap-row b {
+        color: var(--teal);
+        font-size: clamp(15px, 1.2vw, 20px);
+      }
+
+      .roadmap-row strong {
+        justify-self: end;
+        color: var(--ink);
+        font-size: clamp(18px, 1.8vw, 30px);
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 520;
+      }
+
+      .risk-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+
+      .risk-box {
+        min-height: 320px;
+        padding: 28px;
+        border: 1px solid rgba(255, 250, 241, 0.18);
+        background: rgba(255, 250, 241, 0.08);
+      }
+
+      .institute {
+        display: grid;
+        grid-template-columns: 0.95fr 1.05fr;
+        gap: 40px;
+        align-items: center;
+      }
+
+      .verticals {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .vertical {
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        padding: 14px 18px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.7);
+        color: #33414a;
+        font-weight: 740;
+      }
+
+      .closing {
+        color: #fffaf1;
+        background: #111c24;
+        padding: 0;
+        grid-template-rows: minmax(0, 1fr);
+      }
+
+      .closing::before {
+        z-index: 0;
+        background:
+          linear-gradient(90deg, rgba(17, 28, 36, 0.85) 0%, rgba(17, 28, 36, 0.5) 56%, rgba(17, 28, 36, 0.18) 100%),
+          linear-gradient(0deg, rgba(17, 28, 36, 0.62), transparent 60%);
+      }
+
+      .closing img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 50% 40%;
+        z-index: 0;
+      }
+
+      .closing-content {
+        align-self: center;
+        max-width: 980px;
+        padding:
+          clamp(42px, 6vw, 84px)
+          clamp(42px, 6vw, 84px)
+          clamp(118px, 9vw, 146px);
+      }
+
+      .closing h2 {
+        font-size: clamp(40px, 5.8vw, 82px);
+      }
+
+      .ask {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 36px;
+      }
+
+      .ask div {
+        min-height: 118px;
+        padding: 18px;
+        border: 1px solid rgba(255, 250, 241, 0.22);
+        background: rgba(255, 250, 241, 0.1);
+      }
+
+      .ask b {
+        display: block;
+        margin-bottom: 8px;
+        color: #f0d9a5;
+      }
+
+      .controls {
+        position: fixed;
+        z-index: 10;
+        left: 50%;
+        bottom: clamp(10px, 1.6vw, 22px);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transform: translateX(-50%);
+        padding: 8px;
+        border-radius: 999px;
+        background: rgba(23, 33, 43, 0.78);
+        box-shadow: 0 14px 34px rgba(23, 33, 43, 0.22);
+        backdrop-filter: blur(14px);
+      }
+
+      .nav-button {
+        min-width: 96px;
+        height: 40px;
+        border: 0;
+        border-radius: 999px;
+        color: var(--ivory);
+        background: rgba(255, 255, 255, 0.12);
+        cursor: pointer;
+      }
+
+      .nav-button:hover,
+      .nav-button:focus-visible {
+        outline: none;
+        background: rgba(255, 255, 255, 0.22);
+      }
+
+      .nav-button.primary {
+        color: #111c24;
+        background: #f0d9a5;
+        font-weight: 780;
+      }
+
+      .counter {
+        min-width: 54px;
+        color: rgba(255, 250, 241, 0.84);
+        text-align: center;
+        font-size: 13px;
+      }
+
+      .progress {
+        position: fixed;
+        z-index: 11;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 4px;
+        background: rgba(23, 33, 43, 0.12);
+      }
+
+      .progress span {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: var(--gold);
+        transition: width 240ms ease;
+      }
+
+      @media (max-width: 860px) {
+        body {
+          overflow: auto;
+        }
+
+        .deck-shell {
+          display: block;
+          height: auto;
+          min-height: 100vh;
+          padding: 0;
+        }
+
+        .deck {
+          width: 100%;
+          height: auto;
+          min-height: 100vh;
+          aspect-ratio: auto;
+          max-height: none;
+          box-shadow: none;
+          border: 0;
+        }
+
+        .slide {
+          min-height: 100vh;
+          padding: 30px 20px 86px;
+          overflow: auto;
+        }
+
+        .split,
+        .challenge-layout,
+        .retreat-grid,
+        .financials,
+        .institute,
+        .travel-line,
+        .risk-grid,
+        .philosophy-visual,
+        .strategy-layout,
+        .destination-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .stat-grid,
+        .philosophy,
+        .program-matrix,
+        .precedent-grid,
+        .advantage-grid,
+        .ask {
+          grid-template-columns: 1fr;
+        }
+
+        .journey,
+        .phase-grid,
+        .journey-map,
+        .risk-map,
+        .verticals,
+        .retreat-list {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .journey-map::before {
+          display: none;
+        }
+
+        .journey-node,
+        .journey-node:nth-child(even),
+        .journey-node:nth-child(odd) {
+          transform: none;
+        }
+
+        .triad {
+          min-height: 360px;
+        }
+
+        .triad-circle {
+          width: 210px;
+          height: 210px;
+        }
+
+        .risk-map {
+          gap: 16px;
+        }
+
+        .phase {
+          min-height: auto;
+        }
+
+        .image-frame {
+          min-height: 240px;
+        }
+
+        .revenue-wheel {
+          min-height: 620px;
+        }
+
+        .wheel-item {
+          position: static;
+          transform: none !important;
+          width: 100%;
+        }
+
+        .revenue-wheel {
+          gap: 10px;
+        }
+
+        .roadmap-row {
+          grid-template-columns: 70px minmax(0, 1fr);
+        }
+
+        .roadmap-row strong {
+          grid-column: 1 / -1;
+          justify-self: start;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .journey,
+        .phase-grid,
+        .journey-map,
+        .risk-map,
+        .verticals,
+        .retreat-list {
+          grid-template-columns: 1fr;
+        }
+
+        .strengths-grid,
+        .destination-row {
+          grid-template-columns: 1fr;
+        }
+
+        .controls {
+          width: calc(100% - 16px);
+          justify-content: space-between;
+        }
+
+        .nav-button {
+          min-width: 82px;
+        }
+      }
+
+      @media print {
+        body {
+          overflow: visible;
+          background: #fff;
+        }
+
+        .deck-shell {
+          display: block;
+          padding: 0;
+          height: auto;
+        }
+
+        .deck {
+          width: 100%;
+          height: auto;
+          max-height: none;
+          aspect-ratio: auto;
+          box-shadow: none;
+        }
+
+        .slide {
+          position: relative;
+          display: grid;
+          opacity: 1;
+          transform: none;
+          page-break-after: always;
+          min-height: 100vh;
+        }
+
+        .controls,
+        .progress {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="deck-shell" aria-label="Project Aarohi HTML presentation">
+      <section class="deck">
+        <article class="slide hero active" aria-label="Title slide">
+          <img src="assets/image8.png" alt="Premium motherhood campus concept collage" />
+          <div class="hero-content">
+            <h1>Project Aarohi</h1>
+            <p class="lead">
+              An integrated motherhood campus for pregnancy, birth, recovery,
+              early parenting, and women’s lifelong wellness.
+            </p>
+            <div class="meta-row" aria-label="Pitch themes">
+              <span class="meta-pill">Science</span>
+              <span class="meta-pill">Tradition</span>
+              <span class="meta-pill">Family</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide">
+          <header>
+            <p class="eyebrow">Current challenge</p>
+            <h2>A large campus is sitting inside a growing maternity opportunity.</h2>
+          </header>
+          <div class="challenge-layout">
+            <div>
+              <div class="stat-grid">
+                <div class="stat">
+                  <strong>1-2</strong>
+                  <span>Deliveries per month today.</span>
+                </div>
+                <div class="stat">
+                  <strong>Large</strong>
+                  <span>Underutilized campus that can become the advantage.</span>
+                </div>
+                <div class="stat">
+                  <strong>Growing</strong>
+                  <span>Maternity market with strong competition for trust.</span>
+                </div>
+              </div>
+              <p class="challenge-question">
+                How do we make Madhavanji the preferred maternity destination
+                before making heavy infrastructure bets?
+              </p>
+              <p class="wrong-hint">
+                The answer is not just expensive labour suites or luxury interiors.
+                Demand will come from trust, expertise, and a differentiated care experience.
+              </p>
+            </div>
+            <figure class="image-frame focus-campus">
+              <img src="assets/image6.png" alt="Hospital campus exterior concept" />
+            </figure>
+          </div>
+        </article>
+
+        <article class="slide">
+          <header>
+            <p class="eyebrow">Vision for Aarohi</p>
+            <h2>Redefine motherhood care as a lifelong relationship, not one delivery event.</h2>
+          </header>
+          <div class="split">
+            <div>
+              <p class="lead">
+                Aarohi is a trusted Motherhood Institute where evidence-based medicine,
+                compassionate care, and safely integrated Indian traditions support women
+                and families from pregnancy through birth, recovery, parenting, and midlife.
+              </p>
+              <div class="stat-grid">
+                <div class="stat">
+                  <strong>30</strong>
+                  <span>A woman who delivers with us can still choose us at 45.</span>
+                </div>
+                <div class="stat">
+                  <strong>5</strong>
+                  <span>Connected life-stage journeys, handled in one place.</span>
+                </div>
+                <div class="stat">
+                  <strong>1</strong>
+                  <span>Family relationship that compounds over time.</span>
+                </div>
+              </div>
+            </div>
+            <figure class="image-frame contain">
+              <img src="assets/image5.png" alt="Integrated motherhood campus concept collage" />
+            </figure>
+          </div>
+        </article>
+
+        <article class="slide">
+          <header>
+            <p class="eyebrow">What it means</p>
+            <h2>The integrated motherhood ecosystem treats the whole journey in one place.</h2>
+          </header>
+          <div class="journey-map">
+            <div class="journey-node">
+              <div class="node-dot">1</div>
+              <div class="node-card">
+                <h3>Before Birth</h3>
+                <p>Fertility optimisation, pregnancy planning, antenatal care.</p>
+              </div>
+            </div>
+            <div class="journey-node">
+              <div class="node-card">
+                <h3>Birth</h3>
+                <p>Natural birth, high-risk birth, VBAC, family-centred care.</p>
+              </div>
+              <div class="node-dot">2</div>
+            </div>
+            <div class="journey-node">
+              <div class="node-dot">3</div>
+              <div class="node-card">
+                <h3>Fourth Trimester</h3>
+                <p>Recovery, lactation, mental health, pelvic floor rehab.</p>
+              </div>
+            </div>
+            <div class="journey-node">
+              <div class="node-card">
+                <h3>Early Parenting</h3>
+                <p>Infant care, development clinics, parenting education.</p>
+              </div>
+              <div class="node-dot">4</div>
+            </div>
+            <div class="journey-node">
+              <div class="node-dot">5</div>
+              <div class="node-card">
+                <h3>Beyond Motherhood</h3>
+                <p>Weight, bone health, breast health, cervical screening, wellbeing.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide">
+          <header>
+            <p class="eyebrow">Market precedents</p>
+            <h2>Two Indian birth-centre models already prove demand for choice-led maternity care.</h2>
+          </header>
+          <div class="precedent-grid">
+            <div class="precedent-card">
+              <p class="location">Hyderabad | The Sanctum</p>
+              <h3>Premium natural birth, backed by continuity and wellness.</h3>
+              <div class="metric-row">
+                <div class="mini-metric">
+                  <strong>2007</strong>
+                  <span>Publicly positioned as serving families since launch.</span>
+                </div>
+                <div class="mini-metric">
+                  <strong>1,500+</strong>
+                  <span>Babies reported by the centre.</span>
+                </div>
+                <div class="mini-metric">
+                  <strong>3,000+</strong>
+                  <span>Couples trained through childbirth classes.</span>
+                </div>
+              </div>
+              <ul class="program-list">
+                <li>Natural birth, VBAC, water birth</li>
+                <li>Midwifery model plus OB/Gyn collaboration</li>
+                <li>Wellness layer: Lamaze, yoga, massage, counselling</li>
+              </ul>
+            </div>
+            <div class="precedent-card">
+              <p class="location">Kochi | Birthvillage</p>
+              <h3>Standalone midwifery centre built around one-on-one respectful care.</h3>
+              <div class="metric-row">
+                <div class="mini-metric">
+                  <strong>2008</strong>
+                  <span>Publicly positioned as a pioneering Indian birth centre.</span>
+                </div>
+                <div class="mini-metric">
+                  <strong>1,000+</strong>
+                  <span>Mothers and babies reported by the centre.</span>
+                </div>
+                <div class="mini-metric">
+                  <strong>1:1</strong>
+                  <span>Continuity, dignity, and informed consent as core claims.</span>
+                </div>
+              </div>
+              <ul class="program-list">
+                <li>Natural birth, water birth, VBAC</li>
+                <li>Birth education, lactation, postpartum support</li>
+                <li>Integrative care language including Ayurveda</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide dark">
+          <header>
+            <p class="eyebrow">Philosophy as differentiator</p>
+            <h2>Clinical confidence, cultural comfort, and family participation in one model.</h2>
+          </header>
+          <div class="philosophy-visual">
+            <div class="triad">
+              <div class="triad-circle science">Science</div>
+              <div class="triad-circle tradition">Tradition</div>
+              <div class="triad-circle family">Family</div>
+            </div>
+            <div class="philosophy-copy">
+              <div>
+                <h3>Science keeps it safe.</h3>
+                <p>Evidence-based obstetrics, high-risk readiness, diagnostics, protocols, and multi-speciality escalation.</p>
+              </div>
+              <div>
+                <h3>Tradition makes it familiar.</h3>
+                <p>Ayurveda, nutrition, rituals, massage, and Indian postpartum practices are curated through medical safety.</p>
+              </div>
+              <div>
+                <h3>Family makes it memorable.</h3>
+                <p>Partners, grandparents, and the baby are included through preparation, recovery, education, and support.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide">
+          <header>
+            <p class="eyebrow">Strategy</p>
+            <h2>Create demand before building infrastructure.</h2>
+          </header>
+          <div class="strategy-layout">
+            <div class="flywheel">
+              <div class="flywheel-core">Aarohi demand engine</div>
+              <div class="flywheel-step">Top-of-funnel trust<span>Gen Z, premium couples, online consults, workshops</span></div>
+              <div class="flywheel-step">Longer engagement<span>Yoga, mental health, lactation, postpartum recovery</span></div>
+              <div class="flywheel-step">Referral loops<span>Classes, couples, grandparents, pediatric touchpoints</span></div>
+              <div class="flywheel-step">Clinical pull<span>VBAC, high-risk, pelvic floor, menopause, mother mental health</span></div>
+            </div>
+            <div>
+              <p class="lead">
+                Aarohi should not wait for delivery volume. It should create
+                visible programs that families join earlier, stay with longer,
+                and recommend more often.
+              </p>
+              <div class="strengths-grid" style="margin-top: 24px">
+                <div class="strength">
+                  <h3>Ayurveda in-house</h3>
+                  <p>Safe traditional recovery, nutrition, massage, and wellness can become a differentiated layer.</p>
+                </div>
+                <div class="strength">
+                  <h3>Multi-speciality in-house</h3>
+                  <p>High-risk confidence, pediatrics, mental health, physiotherapy, diagnostics, and escalation.</p>
+                </div>
+                <div class="strength">
+                  <h3>Large campus</h3>
+                  <p>Classes, retreats, recovery stays, and family education can use capacity already available.</p>
+                </div>
+                <div class="strength">
+                  <h3>Digital community</h3>
+                  <p>Content, antenatal groups, online second opinions, and cohort-based programs build pre-delivery trust.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide">
+          <header>
+            <p class="eyebrow">Phased buildout</p>
+            <h2>Start with high-impact clinics, then scale into premium experiences.</h2>
+          </header>
+          <div class="phase-grid">
+            <div class="phase">
+              <span class="phase-number">1</span>
+              <h3>Build Demand</h3>
+              <p class="phase-goal">Low capital, high impact</p>
+              <ul class="program-list">
+                <li>Pregnancy clinic</li>
+                <li>VBAC clinic</li>
+                <li>Pelvic floor centre</li>
+                <li>Lactation clinic</li>
+                <li>Mental health support</li>
+                <li>Classes and couple workshops</li>
+              </ul>
+            </div>
+            <div class="phase">
+              <span class="phase-number">2</span>
+              <h3>Premium Birth</h3>
+              <p class="phase-goal">Respectful, choice-led birth experience</p>
+              <ul class="program-list">
+                <li>Family birthing suites</li>
+                <li>Natural birth support</li>
+                <li>Labour mobility</li>
+                <li>Birth planning</li>
+                <li>Respectful maternity care</li>
+                <li>Water birth and midwife-led care later</li>
+              </ul>
+            </div>
+            <div class="phase">
+              <span class="phase-number">3</span>
+              <h3>Pregnancy Retreat</h3>
+              <p class="phase-goal">Signature destination product</p>
+              <ul class="program-list">
+                <li>3-7 day programs</li>
+                <li>Scans and nutrition</li>
+                <li>Yoga and physiotherapy</li>
+                <li>Lactation and pediatric counselling</li>
+                <li>Birth preparation</li>
+              </ul>
+            </div>
+            <div class="phase">
+              <span class="phase-number">4</span>
+              <h3>Recovery Suites</h3>
+              <p class="phase-goal">Scale after delivery volume grows</p>
+              <ul class="program-list">
+                <li>Mother-baby suites</li>
+                <li>Nursery support</li>
+                <li>Physiotherapy</li>
+                <li>Mental health and nutrition</li>
+                <li>Safe traditional wellness therapies</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide">
+          <header>
+            <p class="eyebrow">Business model</p>
+            <h2>Revenue comes from repeated relationship points, not only delivery packages.</h2>
+          </header>
+          <div class="financials">
+            <div class="revenue-wheel" aria-label="Revenue stream diagram">
+              <div class="wheel-core">Aarohi revenue engine</div>
+              <div class="wheel-item">Pregnancy programs</div>
+              <div class="wheel-item">Delivery packages</div>
+              <div class="wheel-item">Recovery suites</div>
+              <div class="wheel-item">Mother wellness</div>
+              <div class="wheel-item">Baby wellness</div>
+              <div class="wheel-item">Annual memberships</div>
+            </div>
+            <div class="roadmap">
+              <div class="roadmap-row">
+                <b>Year 1</b>
+                <span>Establish brand and demand clinics</span>
+                <strong>20/month</strong>
+              </div>
+              <div class="roadmap-row">
+                <b>Year 2</b>
+                <span>Introduce premium birthing suites</span>
+                <strong>50/month</strong>
+              </div>
+              <div class="roadmap-row">
+                <b>Year 3</b>
+                <span>Open postpartum recovery wing</span>
+                <strong>100/month</strong>
+              </div>
+              <div class="roadmap-row">
+                <b>Year 5</b>
+                <span>Scale as a regional destination centre</span>
+                <strong>Destination</strong>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide dark">
+          <header>
+            <p class="eyebrow">Risk discipline</p>
+            <h2>Each risk has a matching mitigation and a proof point before scale-up.</h2>
+          </header>
+          <div class="risk-map">
+            <div class="risk-col">
+              <div class="risk-head">Risk</div>
+              <div class="risk-cell">Low delivery volume persists</div>
+              <div class="risk-cell">Competition outspends us on luxury</div>
+              <div class="risk-cell">Recruitment and operating cost pressure</div>
+              <div class="risk-cell">Market is slow to adopt a broader model</div>
+            </div>
+            <div class="risk-col">
+              <div class="risk-head">Mitigation</div>
+              <div class="risk-cell mitigation">Start with clinics, classes, referrals, and second opinions</div>
+              <div class="risk-cell mitigation">Compete on expertise, choice, safety, and continuity</div>
+              <div class="risk-cell mitigation">Use phased capex and existing Ayurveda / multi-speciality teams</div>
+              <div class="risk-cell mitigation">Build visible communities before building expensive rooms</div>
+            </div>
+            <div class="risk-col">
+              <div class="risk-head">Proof before investment</div>
+              <div class="risk-cell proof">Program utilization, repeat visits, referral sources</div>
+              <div class="risk-cell proof">VBAC, pelvic floor, mental health, retreat demand</div>
+              <div class="risk-cell proof">Unit economics by service line and staffing model</div>
+              <div class="risk-cell proof">Conversion from classes and clinics to delivery packages</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide">
+          <header>
+            <p class="eyebrow">Regional destination</p>
+            <h2>Why Madhavanji can become the place women travel to, not just deliver at.</h2>
+          </header>
+          <div class="destination-layout">
+            <div>
+              <p class="lead">
+                Women travel for expertise: VBAC, high-risk pregnancy, respectful
+                birth, better outcomes, and comprehensive postpartum recovery.
+              </p>
+              <p class="lead" style="margin-top: 24px">
+                Madhavanji can uniquely combine destination comfort with a hospital
+                safety net, a large campus, airport proximity, proposed bullet train
+                access, Ayurveda, and multi-speciality care.
+              </p>
+            </div>
+            <div class="destination-stack">
+              <div class="destination-row">
+                <b>Centres of excellence</b>
+                <span>VBAC, pelvic floor, high-risk pregnancy, multiple pregnancy, mother mental health.</span>
+              </div>
+              <div class="destination-row">
+                <b>Destination products</b>
+                <span>Pregnancy retreats, premium birth suites, postpartum stays, family education.</span>
+              </div>
+              <div class="destination-row">
+                <b>Life-care verticals</b>
+                <span>Adolescent health, fertility, pregnancy, birth, postpartum, menopause, healthy ageing.</span>
+              </div>
+              <div class="destination-row">
+                <b>Hospital advantage</b>
+                <span>Integrated support that standalone birth centres cannot fully replicate.</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide closing">
+          <img src="assets/image4.png" alt="Postpartum recovery suite concept board" />
+          <div class="closing-content">
+            <p class="eyebrow">Decision moment</p>
+            <h2>A place where families begin their journey.</h2>
+            <div class="ask">
+              <div>
+                <b>Approve Phase 1</b>
+                Launch demand-building clinics and education programs.
+              </div>
+              <div>
+                <b>Define proof points</b>
+                Track monthly deliveries, program uptake, referrals, and patient trust.
+              </div>
+              <div>
+                <b>Scale by evidence</b>
+                Invest in suites and retreats when the demand signal is clear.
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <nav class="controls" aria-label="Slide navigation">
+      <button class="nav-button" id="prev" type="button">Prev</button>
+      <span class="counter" id="counter" aria-live="polite">1 / 12</span>
+      <button class="nav-button primary" id="next" type="button">Next</button>
+    </nav>
+    <div class="progress" aria-hidden="true"><span id="progress"></span></div>
+
+    <script>
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const prev = document.getElementById("prev");
+      const next = document.getElementById("next");
+      const counter = document.getElementById("counter");
+      const progress = document.getElementById("progress");
+      let current = 0;
+
+      function render() {
+        slides.forEach((slide, index) => {
+          slide.classList.toggle("active", index === current);
+          slide.setAttribute("aria-hidden", index === current ? "false" : "true");
+        });
+        counter.textContent = `${current + 1} / ${slides.length}`;
+        progress.style.width = `${((current + 1) / slides.length) * 100}%`;
+        prev.disabled = current === 0;
+        next.textContent = current === slides.length - 1 ? "Restart" : "Next";
+      }
+
+      function go(delta) {
+        if (current === slides.length - 1 && delta > 0) {
+          current = 0;
+        } else {
+          current = Math.max(0, Math.min(slides.length - 1, current + delta));
+        }
+        render();
+      }
+
+      prev.addEventListener("click", () => go(-1));
+      next.addEventListener("click", () => go(1));
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight" || event.key === " ") {
+          event.preventDefault();
+          go(1);
+        }
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          go(-1);
+        }
+        if (event.key === "Home") {
+          current = 0;
+          render();
+        }
+        if (event.key === "End") {
+          current = slides.length - 1;
+          render();
+        }
+      });
+
+      render();
+    </script>
+  </body>
+</html>
